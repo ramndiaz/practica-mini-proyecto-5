@@ -16,14 +16,14 @@ def get_users():
 @cross_origin
 @app.route('/users/<id>', methods=['GET'])
 def get_user(id):
-    user = mongo.db.users.find_one({'_id': id})
+    user = mongo.db.users.find_one({'id': id})
     response = json_util.dumps(user)
     return Response(response, mimetype='application/json')
 
 @cross_origin
 @app.route('/users/<id>', methods=['DELETE'])
 def delete_user(id):
-    mongo.db.users.delete_one({'_id': id})
+    mongo.db.users.delete_one({'id': id})
     response = jsonify({'messsage': ' user ' + id + ' was delete'})
     return response
 
@@ -37,7 +37,7 @@ def update_user(id):
 
     if name  and email and username and password :
         hashed_password = generate_password_hash(password)
-        mongo.db.users.update_one({'_id': id}, {'$set':{
+        mongo.db.users.update_one({'id': id}, {'$set':{
             'name': name,
             'email': email,
             'username': username,

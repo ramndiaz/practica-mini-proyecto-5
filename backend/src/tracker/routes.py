@@ -24,7 +24,7 @@ def get_tracker():
        {
          "from": "pomodoro",
          "localField": "id",
-         "foreignField": "id",
+         "foreignField": "user_id",
          "as": "pomodoro_users"
        }
   }
@@ -37,30 +37,28 @@ def get_tracker():
 def create_pomodoro():
     user_id = request.json['id']
     date_time = datetime.now()
-    focus_time = request.json['focus_time']
-    break_time = request.json['break_time']
+    name = request.json['name']
+    description = request.json['description']
     total_pomo = request.json['total_pomo']
 
-    if user_id  and date_time and focus_time and break_time and total_pomo :
+    if user_id  and date_time and name and description and total_pomo :
 
-        if total_pomo < 1:
-            return jsonify({ "error":"must save at least 1 full pomodoro." }), 400
-
-        mongo.db.pomodoro.insert_one({
-            'user_id': user_id,
-            'date_time' : date_time,
-            'focus_time' : focus_time,
-            'break_time' : break_time,
-            'total_pomo' : total_pomo
-            })
-        response = {
-            'user_id': user_id,
-            'date_time' : date_time,
-            'focus_time' : focus_time,
-            'break_time' : break_time,
-            'total_pomo' : total_pomo
-        }
-        return response
-        #return redirect(url_for('login'))
+        if total_pomo:
+            mongo.db.pomodoro.insert_one({
+                'user_id': user_id,
+                'date_time' : date_time,
+                'name' : name,
+                'description' : description,
+                'total_pomo' : total_pomo
+                })
+            response = {
+                'user_id': user_id,
+                'date_time' : date_time,
+                'name' : name,
+                'description' : description,
+                'total_pomo' : total_pomo
+            }
+            return response
+        return jsonify({ "error":"must save at least 1 full pomodoro." }), 400
     else:
         return not_found()

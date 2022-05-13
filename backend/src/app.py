@@ -60,7 +60,7 @@ def not_found(error=None):
 
 from loger import routes
 from user import routes
-from pomodoro import routes
+from tracker import routes
 
 if __name__=="__main__":
 	app.run(debug=True)
